@@ -320,11 +320,22 @@
     margin-top:2px;
   }
   .hajj-card .details{
-    padding:6px 22px 22px;
+    padding:6px 22px 12px;
     flex:1;
     display:flex;
     flex-direction:column;
     gap:10px;
+  }
+  .card-book{
+    padding:0 22px 20px;
+    margin-top:auto;
+  }
+  .book-now{
+    width:100%;
+    justify-content:center;
+  }
+  .trip-body .card-book{
+    padding:16px 0 0;
   }
   .detail-row{
     display:flex;
@@ -805,6 +816,12 @@
 </a>
 
 <script>
+/* ============ WHATSAPP BOOKING ============ */
+const WHATSAPP_NUMBER = '201129329312';
+function whatsAppLink(message){
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
 /* ============ DATA: HAJJ PACKAGES ============ */
 const hajjPackages = [
   {
@@ -878,7 +895,9 @@ function iconSvg(name){
 
 function renderHajj(){
   const grid = document.getElementById('hajjGrid');
-  grid.innerHTML = hajjPackages.map(p => `
+  grid.innerHTML = hajjPackages.map(p => {
+    const msg = `السلام عليكم، أريد الاستفسار عن باقة الحج: ${p.name} — السعر ${p.price} جنيه (موسم 1448هـ / 2027م)`;
+    return `
     <div class="hajj-card">
       <div class="card-top">
         ${p.oldPrice ? '<span class="badge-offer">عرض خاص</span>' : ''}
@@ -904,8 +923,11 @@ function renderHajj(){
           <span class="txt"><strong>منى وعرفة</strong><span>${p.camps}</span></span>
         </div>
       </div>
-    </div>
-  `).join('');
+      <div class="card-book">
+        <a class="btn btn-primary book-now" href="${whatsAppLink(msg)}" target="_blank" rel="noopener">احجز الآن</a>
+      </div>
+    </div>`;
+  }).join('');
 }
 renderHajj();
 
@@ -1062,6 +1084,8 @@ function tripCard(trip, idx){
       <span>موعد العودة: <b>${trip.back}</b></span>
     </div>` : '';
 
+  const umrahMsg = `السلام عليكم، أريد الاستفسار عن عرض العمرة: من ${trip.start} إلى ${trip.end} (${trip.month}) — ${trip.days} أيام`;
+
   return `
   <details class="trip-card" data-month="${trip.month}">
     <summary>
@@ -1092,6 +1116,9 @@ function tripCard(trip, idx){
         </table>
       </div>
       <div class="price-table-legend">الأسعار بالجنيه المصري للفرد الواحد، وغير شاملة تذكرة الطيران. ★ يشير إلى أفضل سعر متاح في هذه الرحلة.</div>
+      <div class="card-book">
+        <a class="btn btn-primary book-now" href="${whatsAppLink(umrahMsg)}" target="_blank" rel="noopener">احجز الآن</a>
+      </div>
     </div>
   </details>`;
 }
