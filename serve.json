@@ -1,6 +1,4 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
     { "source": "/hajj", "destination": "/hajj.html" },
     { "source": "/umrah", "destination": "/umrah.html" },
