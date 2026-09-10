@@ -1,0 +1,10 @@
+{
+  "name": "abo-slima-tours",
+  "version": "1.0.0",
+  "private": true,
+  "description": "أبو سليمة للسياحة — باقات الحج والعمرة",
+  "scripts": {
+    "dev": "npx --yes serve . -l 3000",
+    "start": "npx --yes serve . -l 3000"
+  }
+}
