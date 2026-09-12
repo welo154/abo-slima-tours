@@ -93,20 +93,20 @@
       '<div class="promo-overlay" id="promoOverlay" role="dialog" aria-modal="true" aria-labelledby="promoTitle">' +
         '<div class="promo-modal">' +
           '<button type="button" class="promo-close" data-promo-close aria-label="إغلاق">&times;</button>' +
-          '<h2 id="promoTitle">عمرة سبتمبر VIP</h2>' +
-          '<p class="promo-lead">أقرب رحلتين متاحتين الآن — أماكن محدودة. احجز قبل اكتمال العدد.</p>' +
+          '<h2 id="promoTitle">عمرة سبتمبر — أماكن محدودة</h2>' +
+          '<p class="promo-lead">أقرب رحلتين متاحتين الآن والأماكن بتخلص بسرعة. احجز قبل ما العدد يكتمل.</p>' +
           '<div class="promo-trips">' +
-            '<a class="promo-trip-btn" href="' + trips[0].book + '" data-promo-track="VIP Entry 22 Sep">' +
+            '<a class="promo-trip-btn" href="' + trips[0].book + '" data-promo-track="Urgent Entry 22 Sep">' +
               '<strong>22 سبتمبر ← 1 أكتوبر</strong>' +
-              '<span>10 أيام · VIP · أماكن محدودة</span>' +
+              '<span>10 أيام · عاجل · أماكن محدودة</span>' +
             '</a>' +
-            '<a class="promo-trip-btn" href="' + trips[1].book + '" data-promo-track="VIP Entry 23 Sep">' +
+            '<a class="promo-trip-btn" href="' + trips[1].book + '" data-promo-track="Urgent Entry 23 Sep">' +
               '<strong>23 سبتمبر ← 29 سبتمبر</strong>' +
-              '<span>7 أيام · VIP · أماكن محدودة</span>' +
+              '<span>7 أيام · عاجل · أماكن محدودة</span>' +
             '</a>' +
           '</div>' +
           '<div class="promo-actions">' +
-            '<a class="btn btn-primary" href="/umrah" data-promo-track="VIP Entry See All">عرض العمرة</a>' +
+            '<a class="btn btn-primary" href="/umrah" data-promo-track="Urgent Entry See All">عرض العمرة</a>' +
             '<button type="button" class="btn btn-outline" data-promo-close>لاحقاً</button>' +
           '</div>' +
         '</div>' +
@@ -137,7 +137,7 @@
 
     document.body.appendChild(el(
       '<div class="promo-bubble" id="promoBubble" role="status">' +
-        '<div class="promo-bubble-title" id="promoBubbleTitle">عمرة VIP</div>' +
+        '<div class="promo-bubble-title" id="promoBubbleTitle">أماكن محدودة</div>' +
         '<p id="promoBubbleText"></p>' +
         '<div class="promo-bubble-actions">' +
           '<a class="btn btn-primary" id="promoBubbleCta" href="/umrah" style="padding:8px 14px;font-size:.88rem">احجز الآن</a>' +
@@ -153,7 +153,7 @@
     if (!overlay) return;
     overlay.classList.add('is-open');
     document.body.style.overflow = 'hidden';
-    trackView('VIP Umrah Entry Modal');
+    trackView('Urgent Umrah Entry Modal');
   }
 
   function closeModal() {
@@ -176,7 +176,7 @@
       var rText = document.getElementById('promoRibbonText');
       var rCta = document.getElementById('promoRibbonCta');
       if (ribbon && rText && rCta) {
-        rText.textContent = 'VIP: ' + copy;
+        rText.textContent = 'عاجل: ' + copy;
         rCta.href = trip.book;
         ribbon.classList.add('is-visible');
       }
@@ -196,8 +196,8 @@
       var bCta = document.getElementById('promoBubbleCta');
       var bDetails = document.getElementById('promoBubbleDetails');
       if (bubble && bTitle && bText && bCta && bDetails) {
-        bTitle.textContent = 'أقرب عمرة · VIP';
-        bText.textContent = trip.label + '. أماكن محدودة — اضغط للحجز مباشرة.';
+        bTitle.textContent = 'عاجل · أماكن محدودة';
+        bText.textContent = trip.label + '. الأماكن بتخلص بسرعة — اضغط للحجز مباشرة.';
         bCta.href = trip.book;
         bDetails.href = trip.details;
         bubble.classList.add('is-visible');
@@ -205,7 +205,7 @@
     }
 
     setCount(getCount() + 1);
-    trackView('VIP Reminder ' + shape + ' ' + trip.start);
+    trackView('Urgent Reminder ' + shape + ' ' + trip.start);
     nextTrip();
     shapeIndex = (shapeIndex + 1) % 3;
   }
