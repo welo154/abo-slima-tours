@@ -5,7 +5,6 @@
   "description": "Abo Slima Tours - Hajj and Umrah packages",
   "scripts": {
     "dev": "npx --yes serve . -l 3000",
-    "start": "npx --yes serve . -l 3000",
-    "build": "node -e \"console.log('static site ready')\""
+    "start": "npx --yes serve . -l 3000"
   }
 }
