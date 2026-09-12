@@ -1,10 +1,13 @@
-{
-  "name": "abo-slima-tours",
-  "version": "1.0.0",
-  "private": true,
-  "description": "أبو سليمة للسياحة — باقات الحج والعمرة",
-  "scripts": {
-    "dev": "npx --yes serve . -l 3000",
-    "start": "npx --yes serve . -l 3000"
-  }
+﻿{
+    "version":  "1.0.0",
+    "name":  "abo-slima-tours",
+    "description":  "Abo Slima Tours - Hajj and Umrah packages",
+    "scripts":  {
+                    "start":  "npx --yes serve . -l 3000",
+                    "dev":  "npx --yes serve . -l 3000"
+                },
+    "dependencies":  {
+                         "@vercel/analytics":  "^2.0.1"
+                     },
+    "private":  true
 }

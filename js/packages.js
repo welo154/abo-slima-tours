@@ -126,6 +126,7 @@ if (document.getElementById('hajjGrid')) renderHajj();
 /* hotels: array of 5 rows [madinahHotel, meccaHotel, quad, trio, duo] — starred row is best value */
 const umrahTrips = [
   { month:"سبتمبر", start:"22 سبتمبر", end:"1 أكتوبر", days:10, nightsMadinah:4, nightsMecca:5,
+    vip:true, vipLabel:"أقرب رحلة · VIP", priority:1,
     hotels:[
       ["الحارثية بالإفطار","المروة روتانا - موفنبيك (برج الساعة بالإفطار)","71350","76750","86650"],
       ["وينران / دار الخير","المروة روتانا - موفنبيك (برج الساعة بالإفطار)","65950","71450","81450"],
@@ -135,6 +136,7 @@ const umrahTrips = [
     ], star:4 },
 
   { month:"سبتمبر", start:"23 سبتمبر", end:"29 سبتمبر", days:7, nightsMadinah:3, nightsMecca:3,
+    vip:true, vipLabel:"أقرب رحلة · VIP", priority:2,
     go:"8:55 ص", back:"11:55 م",
     hotels:[
       ["الحارثية بالإفطار","المروة روتانا - موفنبيك (برج الساعة بالإفطار)","61350","64950","71450"],
@@ -281,12 +283,17 @@ function tripCard(trip, idx){
     package: packageLabel,
     departure: trip.start
   });
+  const vipClass = trip.vip ? ' trip-card--vip' : '';
+  const vipBadges = trip.vip
+    ? `<span class="vip-badge">${trip.vipLabel || 'VIP'}</span><span class="chip gold">أماكن محدودة</span>`
+    : '';
 
   return `
-  <details class="trip-card" data-month="${trip.month}" data-package="${packageLabel}">
+  <details class="trip-card${vipClass}" data-month="${trip.month}" data-package="${packageLabel}" ${trip.vip ? 'data-vip="true"' : ''}>
     <summary>
       <span class="trip-dates">من ${trip.start} إلى ${trip.end}</span>
       <span class="trip-meta">
+        ${vipBadges}
         <span class="chip">${trip.days} أيام</span>
         <span class="chip">${trip.nightsMadinah} ليالي مدينة</span>
         <span class="chip">${trip.nightsMecca} ليالي مكة</span>
@@ -322,9 +329,21 @@ function tripCard(trip, idx){
 function renderUmrah(activeMonth){
   const list = document.getElementById('tripList');
   if (!list) return;
-  const items = umrahTrips.filter(t => t.month === activeMonth);
+  const items = umrahTrips
+    .filter(t => t.month === activeMonth)
+    .slice()
+    .sort((a, b) => {
+      const pa = a.priority != null ? a.priority : 999;
+      const pb = b.priority != null ? b.priority : 999;
+      if (pa !== pb) return pa - pb;
+      if (a.vip && !b.vip) return -1;
+      if (!a.vip && b.vip) return 1;
+      return 0;
+    });
   list.innerHTML = items.map((t,i) => tripCard(t,i)).join('');
 }
+
+window.AboSlimaVipTrips = umrahTrips.filter(t => t.vip).sort((a, b) => (a.priority || 99) - (b.priority || 99));
 
 function renderMonthTabs(){
   const tabs = document.getElementById('monthTabs');
