@@ -258,7 +258,8 @@ const umrahTrips = [
 ];
 
 function cheapestOf(trip){
-  return Math.min(...trip.hotels.map(h => parseInt(h[4],10)));
+  /* hotels: [madinah, mecca, quad, trio, duo] — show lowest رباعي */
+  return Math.min(...trip.hotels.map(h => parseInt(h[2], 10)));
 }
 
 function tripCard(trip, idx){
