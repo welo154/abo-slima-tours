@@ -1,7 +1,4 @@
 {
-  "framework": null,
-  "installCommand": "echo skip",
-  "buildCommand": "echo skip",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
@@ -9,5 +6,19 @@
     { "source": "/umrah", "destination": "/umrah.html" },
     { "source": "/book", "destination": "/book.html" },
     { "source": "/thank-you", "destination": "/thank-you.html" }
+  ],
+  "headers": [
+    {
+      "source": "/js/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(.*).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    }
   ]
 }
