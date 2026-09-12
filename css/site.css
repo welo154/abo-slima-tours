@@ -318,8 +318,15 @@
   .card-book{
     padding:0 22px 20px;
     margin-top:auto;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
   }
   .book-now{
+    width:100%;
+    justify-content:center;
+  }
+  .book-form{
     width:100%;
     justify-content:center;
   }

@@ -1,7 +1,36 @@
-﻿/* ============ BOOKING LINKS ============ */
+﻿/* ============ BOOKING / WHATSAPP ============ */
+const WHATSAPP_NUMBER = '201129329312';
+
+function whatsAppLink(message){
+  return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
+}
+
 function bookUrl(params){
   const q = new URLSearchParams(params);
   return '/book?' + q.toString();
+}
+
+function hajjInquiryMessage(p){
+  return [
+    'السلام عليكم ورحمة الله وبركاته',
+    'كنت عايز أسأل عن باقة الحج: ' + p.name + ' — السعر ' + p.price + ' جنيه (موسم 1448هـ / 2027م)'
+  ].join('\n');
+}
+
+function umrahInquiryMessage(trip, packageLabel){
+  return [
+    'السلام عليكم ورحمة الله وبركاته',
+    'كنت عايز أسأل عن عرض العمرة: ' + packageLabel
+  ].join('\n');
+}
+
+function bookActionsHtml(opts){
+  /* opts: { waHref, formHref, service, packageName } */
+  return `
+      <div class="card-book">
+        <a class="btn btn-primary book-now" href="${opts.waHref}" target="_blank" rel="noopener" data-service="${opts.service}" data-package="${opts.packageName}">احجز الآن</a>
+        <a class="btn btn-outline book-form" href="${opts.formHref}" data-service="${opts.service}" data-package="${opts.packageName}">املأ بياناتك أولاً</a>
+      </div>`;
 }
 
 /* ============ DATA: HAJJ PACKAGES ============ */
@@ -79,7 +108,8 @@ function renderHajj(){
   const grid = document.getElementById('hajjGrid');
   if (!grid) return;
   grid.innerHTML = hajjPackages.map(p => {
-    const href = bookUrl({ service: 'hajj', package: p.name, price: p.price });
+    const formHref = bookUrl({ service: 'hajj', package: p.name, price: p.price });
+    const waHref = whatsAppLink(hajjInquiryMessage(p));
     return `
     <div class="hajj-card" data-package="${p.name}">
       <div class="card-top">
@@ -106,9 +136,7 @@ function renderHajj(){
           <span class="txt"><strong>منى وعرفة</strong><span>${p.camps}</span></span>
         </div>
       </div>
-      <div class="card-book">
-        <a class="btn btn-primary book-now" href="${href}" data-service="hajj" data-package="${p.name}">احجز الآن</a>
-      </div>
+      ${bookActionsHtml({ waHref, formHref, service: 'hajj', packageName: p.name })}
     </div>`;
   }).join('');
 
@@ -279,11 +307,12 @@ function tripCard(trip, idx){
     </div>` : '';
 
   const packageLabel = `من ${trip.start} إلى ${trip.end} (${trip.month}) — ${trip.days} أيام`;
-  const href = bookUrl({
+  const formHref = bookUrl({
     service: 'umrah',
     package: packageLabel,
     departure: trip.start
   });
+  const waHref = whatsAppLink(umrahInquiryMessage(trip, packageLabel));
   const vipClass = trip.vip ? ' trip-card--vip' : '';
   const vipBadges = trip.vip
     ? `<span class="vip-badge">${trip.vipLabel || 'عاجل · أماكن محدودة'}</span><span class="chip gold">احجز بسرعة</span>`
@@ -320,9 +349,7 @@ function tripCard(trip, idx){
         </table>
       </div>
       <div class="price-table-legend">الأسعار بالجنيه المصري للفرد الواحد، وغير شاملة تذكرة الطيران. ★ يشير إلى أفضل سعر متاح في هذه الرحلة.</div>
-      <div class="card-book">
-        <a class="btn btn-primary book-now" href="${href}" data-service="umrah" data-package="${packageLabel}">احجز الآن</a>
-      </div>
+      ${bookActionsHtml({ waHref, formHref, service: 'umrah', packageName: packageLabel })}
     </div>
   </details>`;
 }

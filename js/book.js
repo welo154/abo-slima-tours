@@ -26,7 +26,8 @@
   function buildMessage(data) {
     var serviceLabel = data.service === 'hajj' ? 'حج' : data.service === 'umrah' ? 'عمرة' : data.service;
     var lines = [
-      'ازاي أقدر أساعد حضرتك؟',
+      'السلام عليكم ورحمة الله وبركاته',
+      'كنت عايز أسأل عن: ' + data.package,
       '',
       'طلب حجز جديد من الموقع:',
       'الاسم: ' + data.name,

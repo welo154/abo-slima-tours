@@ -6,24 +6,38 @@
   var AFTER_DISMISS_MS = 90000;
   var START_DELAY_MS = 8000;
 
+  var WHATSAPP_NUMBER = '201129329312';
+
+  function waLink(text) {
+    return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
+  }
+
+  function inquiryText(packageLabel) {
+    return 'السلام عليكم ورحمة الله وبركاته\nكنت عايز أسأل عن عرض العمرة: ' + packageLabel;
+  }
+
   var trips = [
     {
       start: '22 سبتمبر',
       end: '1 أكتوبر',
       days: 10,
-      label: 'من 22 سبتمبر إلى 1 أكتوبر — 10 أيام',
+      label: 'من 22 سبتمبر إلى 1 أكتوبر (سبتمبر) — 10 أيام',
       book: '/book?service=umrah&package=' + encodeURIComponent('من 22 سبتمبر إلى 1 أكتوبر (سبتمبر) — 10 أيام') + '&departure=' + encodeURIComponent('22 سبتمبر'),
+      wa: null,
       details: '/umrah'
     },
     {
       start: '23 سبتمبر',
       end: '29 سبتمبر',
       days: 7,
-      label: 'من 23 سبتمبر إلى 29 سبتمبر — 7 أيام',
+      label: 'من 23 سبتمبر إلى 29 سبتمبر (سبتمبر) — 7 أيام',
       book: '/book?service=umrah&package=' + encodeURIComponent('من 23 سبتمبر إلى 29 سبتمبر (سبتمبر) — 7 أيام') + '&departure=' + encodeURIComponent('23 سبتمبر'),
+      wa: null,
       details: '/umrah'
     }
   ];
+  trips[0].wa = waLink(inquiryText(trips[0].label));
+  trips[1].wa = waLink(inquiryText(trips[1].label));
 
   var tripIndex = 0;
   var shapeIndex = 0;
@@ -96,17 +110,18 @@
           '<h2 id="promoTitle">عمرة سبتمبر — أماكن محدودة</h2>' +
           '<p class="promo-lead">أقرب رحلتين متاحتين الآن والأماكن بتخلص بسرعة. احجز قبل ما العدد يكتمل.</p>' +
           '<div class="promo-trips">' +
-            '<a class="promo-trip-btn" href="' + trips[0].book + '" data-promo-track="Urgent Entry 22 Sep">' +
+            '<a class="promo-trip-btn" href="' + trips[0].wa + '" target="_blank" rel="noopener" data-promo-track="Urgent Entry 22 Sep" data-service="umrah" data-package="' + trips[0].label + '">' +
               '<strong>22 سبتمبر ← 1 أكتوبر</strong>' +
-              '<span>10 أيام · عاجل · أماكن محدودة</span>' +
+              '<span>10 أيام · عاجل · أماكن محدودة — واتساب مباشرة</span>' +
             '</a>' +
-            '<a class="promo-trip-btn" href="' + trips[1].book + '" data-promo-track="Urgent Entry 23 Sep">' +
+            '<a class="promo-trip-btn" href="' + trips[1].wa + '" target="_blank" rel="noopener" data-promo-track="Urgent Entry 23 Sep" data-service="umrah" data-package="' + trips[1].label + '">' +
               '<strong>23 سبتمبر ← 29 سبتمبر</strong>' +
-              '<span>7 أيام · عاجل · أماكن محدودة</span>' +
+              '<span>7 أيام · عاجل · أماكن محدودة — واتساب مباشرة</span>' +
             '</a>' +
           '</div>' +
           '<div class="promo-actions">' +
             '<a class="btn btn-primary" href="/umrah" data-promo-track="Urgent Entry See All">عرض العمرة</a>' +
+            '<a class="btn btn-outline" href="' + trips[0].book + '">املأ بياناتك</a>' +
             '<button type="button" class="btn btn-outline" data-promo-close>لاحقاً</button>' +
           '</div>' +
         '</div>' +
@@ -141,7 +156,7 @@
         '<p id="promoBubbleText"></p>' +
         '<div class="promo-bubble-actions">' +
           '<a class="btn btn-primary" id="promoBubbleCta" href="/umrah" style="padding:8px 14px;font-size:.88rem">احجز الآن</a>' +
-          '<a class="btn btn-outline" id="promoBubbleDetails" href="/umrah" style="padding:8px 14px;font-size:.88rem">التفاصيل</a>' +
+          '<a class="btn btn-outline" id="promoBubbleDetails" href="/book" style="padding:8px 14px;font-size:.88rem">املأ بياناتك</a>' +
           '<button type="button" class="promo-dismiss" data-promo-soft-dismiss aria-label="إغلاق">&times;</button>' +
         '</div>' +
       '</div>'
@@ -177,7 +192,9 @@
       var rCta = document.getElementById('promoRibbonCta');
       if (ribbon && rText && rCta) {
         rText.textContent = 'عاجل: ' + copy;
-        rCta.href = trip.book;
+        rCta.href = trip.wa;
+        rCta.target = '_blank';
+        rCta.rel = 'noopener';
         ribbon.classList.add('is-visible');
       }
     } else if (shape === 'toast') {
@@ -186,7 +203,9 @@
       var tCta = document.getElementById('promoToastCta');
       if (toast && tText && tCta) {
         tText.textContent = copy + ' — احجز قبل اكتمال العدد';
-        tCta.href = trip.book;
+        tCta.href = trip.wa;
+        tCta.target = '_blank';
+        tCta.rel = 'noopener';
         toast.classList.add('is-visible');
       }
     } else {
@@ -198,8 +217,10 @@
       if (bubble && bTitle && bText && bCta && bDetails) {
         bTitle.textContent = 'عاجل · أماكن محدودة';
         bText.textContent = trip.label + '. الأماكن بتخلص بسرعة — اضغط للحجز مباشرة.';
-        bCta.href = trip.book;
-        bDetails.href = trip.details;
+        bCta.href = trip.wa;
+        bCta.target = '_blank';
+        bCta.rel = 'noopener';
+        bDetails.href = trip.book;
         bubble.classList.add('is-visible');
       }
     }
